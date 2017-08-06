@@ -6,7 +6,7 @@ use common\models\base\Review;
 /**
  * This is the ActiveQuery class for [[common\models\base\Review]].
  *
- * @see \app\models\Review
+ * @see \common\models\base\Review
  */
 class ReviewQuery extends \yii\db\ActiveQuery
 {

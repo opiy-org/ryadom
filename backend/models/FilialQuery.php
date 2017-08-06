@@ -6,7 +6,7 @@ use common\models\base\Filial;
 /**
  * This is the ActiveQuery class for [[common\models\base\Filial]].
  *
- * @see \app\models\Filial
+ * @see \common\models\base\Filial
  */
 class FilialQuery extends \yii\db\ActiveQuery
 {

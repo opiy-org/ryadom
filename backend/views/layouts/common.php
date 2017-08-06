@@ -146,6 +146,19 @@ $bundle = BackendAsset::register($this);
                         'badgeBgClass' => 'label-success',
                     ],
                     [
+                        'label' => Yii::t('backend', 'Catalog'),
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            ['label' => Yii::t('backend', 'Cities'), 'url' => ['/city/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Organizations'), 'url' => ['/organization/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Filial'), 'url' => ['/filial/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Goods'), 'url' => ['/good/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => Yii::t('backend', 'Reviews'), 'url' => ['/review/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+                        ]
+                    ],
+                    [
                         'label' => Yii::t('backend', 'Content'),
                         'url' => '#',
                         'icon' => '<i class="fa fa-edit"></i>',

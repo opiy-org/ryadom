@@ -6,7 +6,7 @@ use common\models\base\City;
 /**
  * This is the ActiveQuery class for [[common\models\base\City]].
  *
- * @see \app\models\City
+ * @see \common\models\base\City
  */
 class CityQuery extends \yii\db\ActiveQuery
 {

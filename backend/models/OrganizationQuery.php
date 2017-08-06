@@ -6,7 +6,7 @@ use common\models\base\Organization;
 /**
  * This is the ActiveQuery class for [[common\models\base\Organization]].
  *
- * @see \app\models\Organization
+ * @see \common\models\base\Organization
  */
 class OrganizationQuery extends \yii\db\ActiveQuery
 {

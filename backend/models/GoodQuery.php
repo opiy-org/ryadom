@@ -6,7 +6,7 @@ use common\models\base\Good;
 /**
  * This is the ActiveQuery class for [[common\models\base\Good]].
  *
- * @see \app\models\Good
+ * @see \common\models\base\Good
  */
 class GoodQuery extends \yii\db\ActiveQuery
 {
