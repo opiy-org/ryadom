@@ -40,7 +40,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\base\Good[] $goods
  * @property \common\models\base\Review[] $reviews
  */
-class Filial extends \yii\db\ActiveRecord
+class Filial extends \common\models\BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 

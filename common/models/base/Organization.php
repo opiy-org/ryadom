@@ -34,7 +34,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\User $createdBy
  * @property \common\models\User $updatedBy
  */
-class Organization extends \yii\db\ActiveRecord
+class Organization extends \common\models\BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 

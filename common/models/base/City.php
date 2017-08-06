@@ -32,7 +32,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\User $updatedBy
  * @property \common\models\base\Filial[] $filials
  */
-class City extends \yii\db\ActiveRecord
+class City extends \common\models\BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 

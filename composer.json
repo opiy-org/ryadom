@@ -62,7 +62,8 @@
     "githubjeka/yii2-gui-rbac": "1.0.2",
     "kdn/yii2-json-editor": "*",
     "nikitich/yii2-smsc": "^0.1.1",
-    "sjaakp/yii2-gcharts": "*"
+    "sjaakp/yii2-gcharts": "*",
+    "kartik-v/yii2-editable": "*"
 
   },
   "require-dev": {

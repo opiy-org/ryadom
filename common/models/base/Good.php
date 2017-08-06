@@ -28,7 +28,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\base\Filial $filial
  * @property \common\models\User $updatedBy
  */
-class Good extends \yii\db\ActiveRecord
+class Good extends \common\models\BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
