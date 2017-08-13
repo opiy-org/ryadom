@@ -7,6 +7,7 @@ use mootensai\behaviors\UUIDBehavior;
 use mootensai\relation\RelationTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
+use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -146,6 +147,11 @@ class City extends BaseActiveRecord
             'uuid' => [
                 'class' => UUIDBehavior::className(),
                 'column' => 'uuid',
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'alias',
             ],
         ];
     }

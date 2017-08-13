@@ -3,6 +3,7 @@
 namespace common\models\base;
 
 use Yii;
+use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use mootensai\behaviors\UUIDBehavior;
@@ -146,6 +147,11 @@ class Organization extends \common\models\BaseActiveRecord
             'uuid' => [
                 'class' => UUIDBehavior::className(),
                 'column' => 'uuid',
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'alias',
             ],
         ];
     }
