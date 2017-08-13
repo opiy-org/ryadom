@@ -2,6 +2,12 @@
 
 namespace backend\controllers;
 
+
+use yii\helpers\ArrayHelper;
+use Intervention\Image\ImageManagerStatic;
+use kartik\grid\EditableColumnAction;
+use trntv\filekit\actions\DeleteAction;
+use trntv\filekit\actions\UploadAction;
 use Yii;
 use common\models\base\Review;
 use app\models\ReviewSearch;
@@ -24,6 +30,32 @@ class ReviewController extends Controller
                 ],
             ],
         ];
+    }
+
+
+
+    public function actions()
+    {
+        return ArrayHelper::merge(parent::actions(), [
+            'edit' => [
+                'class' => EditableColumnAction::className(),
+                'modelClass' => Review::className(),
+                'ajaxOnly' => true,
+            ],
+            'image-upload' => [
+                'class' => UploadAction::className(),
+                'deleteRoute' => 'image-delete',
+                'on afterSave' => function ($event) {
+                    /* @var $file \League\Flysystem\File */
+                    $file = $event->file;
+                    $img = ImageManagerStatic::make($file->read())->fit(215, 215);
+                    $file->put($img->encode());
+                }
+            ],
+            'image-delete' => [
+                'class' => DeleteAction::className()
+            ]
+        ]);
     }
 
     /**

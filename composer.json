@@ -63,7 +63,11 @@
     "kdn/yii2-json-editor": "*",
     "nikitich/yii2-smsc": "^0.1.1",
     "sjaakp/yii2-gcharts": "*",
-    "kartik-v/yii2-editable": "*"
+    "kartik-v/yii2-editable": "*",
+    "electrolinux/phpquery": "^0.9.6",
+    "skeeks/yii2-dadata-suggest-api": "*",
+    "igogo5yo/yii2-upload-from-url": "^1.3",
+    "kartik-v/yii2-widget-fileinput": "@dev"
 
   },
   "require-dev": {

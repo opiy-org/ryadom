@@ -23,7 +23,7 @@ use yii\bootstrap\ActiveForm;
         <div class="col-md-2">
 
 
-            <?php echo $form->field($model, 'image')->widget(\trntv\filekit\widget\Upload::classname(),
+            <?php echo $form->field($model, 'thumbnail')->widget(\trntv\filekit\widget\Upload::classname(),
                 [
                     'url' => ['/file-storage/upload'],
                     'maxFileSize' => 5000000, // 5 MiB

@@ -2,8 +2,10 @@
 
 namespace common\models\base;
 
+use common\models\BaseActiveRecord;
 use common\models\query\FilialQuery;
 use mootensai\behaviors\UUIDBehavior;
+use mootensai\relation\RelationTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\SluggableBehavior;
@@ -45,9 +47,11 @@ use yii\behaviors\TimestampBehavior;
  * @property \common\models\base\Good[] $goods
  * @property \common\models\base\Review[] $reviews
  */
-class Filial extends \common\models\BaseActiveRecord
+class Filial extends BaseActiveRecord
 {
-    use \mootensai\relation\RelationTrait;
+    use RelationTrait;
+
+    public $thumbnail;
 
     /**
      * @inheritdoc
@@ -56,16 +60,18 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return [
             [['organization_id', 'city_id', 'map_zoom', 'created_by', 'updated_by', 'status', 'lock'], 'integer'],
-            [['title', 'alias'], 'required'],
+            [['title'], 'required'],
             [['body', 'settings'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['uuid', 'title', 'alias', 'email', 'site', 'flamp', 'street', 'addr_extra'], 'string', 'max' => 64],
+            [['uuid', 'title', 'alias', 'email', 'site', 'street', 'addr_extra'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 128],
+            [['flamp'], 'string', 'max' => 255],
             [['map_lat', 'map_lon'], 'string', 'max' => 32],
             [['phone', 'bld'], 'string', 'max' => 16],
             [['alias'], 'unique'],
             [['lock'], 'default', 'value' => '0'],
-            [['lock'], 'mootensai\components\OptimisticLockValidator']
+            [['lock'], 'mootensai\components\OptimisticLockValidator'],
+            [['thumbnail'], 'safe'],
         ];
     }
 
@@ -190,9 +196,19 @@ class Filial extends \common\models\BaseActiveRecord
                 'column' => 'uuid',
             ],
             [
+                'class' => 'trntv\filekit\behaviors\UploadBehavior',
+                //'filesStorage' => 'filesystem', // my custom fileStorage from configuration(for properly remove the file from disk)
+                'attribute' => 'thumbnail',
+                'pathAttribute' => 'image',
+                'baseUrlAttribute' => 'image_base_url',
+
+            ],
+            [
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'title',
                 'slugAttribute' => 'alias',
+                'immutable' => true,
+                'ensureUnique' => true,
             ],
         ];
     }
@@ -205,4 +221,6 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return new FilialQuery(get_called_class());
     }
+
+
 }

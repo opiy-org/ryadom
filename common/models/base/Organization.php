@@ -4,6 +4,7 @@ namespace common\models\base;
 
 use common\models\query\OrganizationQuery;
 use common\models\BaseActiveRecord;
+use mootensai\relation\RelationTrait;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -39,7 +40,9 @@ use mootensai\behaviors\UUIDBehavior;
  */
 class Organization extends BaseActiveRecord
 {
-    use \mootensai\relation\RelationTrait;
+    use RelationTrait;
+
+    public $thumbnail;
 
     /**
      * @inheritdoc
@@ -47,7 +50,7 @@ class Organization extends BaseActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alias'], 'required'],
+            [['title'], 'required'],
             [['body', 'bank_props'], 'string'],
             [['created_by', 'updated_by', 'status', 'lock'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -57,7 +60,8 @@ class Organization extends BaseActiveRecord
             [['phone'], 'string', 'max' => 16],
             [['alias'], 'unique'],
             [['lock'], 'default', 'value' => '0'],
-            [['lock'], 'mootensai\components\OptimisticLockValidator']
+            [['lock'], 'mootensai\components\OptimisticLockValidator'],
+            [['thumbnail'], 'safe'],
         ];
     }
     
@@ -154,6 +158,16 @@ class Organization extends BaseActiveRecord
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'title',
                 'slugAttribute' => 'alias',
+                'immutable'=>true,
+                'ensureUnique'=>true,
+            ],
+            [
+                'class' => 'trntv\filekit\behaviors\UploadBehavior',
+                //'filesStorage' => 'filesystem', // my custom fileStorage from configuration(for properly remove the file from disk)
+                'attribute' => 'thumbnail',
+                'pathAttribute' => 'image',
+                'baseUrlAttribute' => 'image_base_url',
+
             ],
         ];
     }

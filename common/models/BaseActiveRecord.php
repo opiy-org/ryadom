@@ -109,4 +109,20 @@ class BaseActiveRecord extends ActiveRecord
     }
 
 
+    /**
+     * @param null $default
+     * @return bool|null|string
+     */
+    public function getImgLnk($default = null)
+    {
+        if ($this->hasAttribute('image')) {
+            return $this->image
+                ? \Yii::getAlias(env('STORAGE_HOST_INFO') . '/source/' . $this->image)
+                : $default;
+        }
+        return false;
+
+    }
+
+
 }

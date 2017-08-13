@@ -7,7 +7,12 @@ $config = [
     'language'=>'en-US',
     'bootstrap' => ['log'],
     'components' => [
-
+        'dadataSuggestApi' =>
+            [
+                'class' => 'skeeks\yii2\dadataSuggestApi\DadataSuggestApi',
+                'authorization_token' => '2d1490b1e8e05ccf695c4d50d54fb208b1b343c2',
+                'timeout' => 12,
+            ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             'itemTable' => '{{%rbac_auth_item}}',
@@ -115,7 +120,7 @@ $config = [
             'baseUrl' => '@storageUrl/source',
             'filesystem' => [
                 'class' => 'common\components\filesystem\LocalFlysystemBuilder',
-                'path' => '@storage/web/source'
+                'path' => '@storage/web/source',
             ],
             'as log' => [
                 'class' => 'common\behaviors\FileStorageLogBehavior',
@@ -179,9 +184,10 @@ if (YII_ENV_DEV) {
         'class'=>'yii\gii\Module'
     ];
 
-    $config['components']['cache'] = [
-        'class' => 'yii\caching\DummyCache'
-    ];
+//    $config['components']['cache'] = [
+//        'class' => 'yii\caching\DummyCache'
+//    ];
+
     $config['components']['mailer']['transport'] = [
         'class' => 'Swift_SmtpTransport',
         'host' => env('SMTP_HOST'),

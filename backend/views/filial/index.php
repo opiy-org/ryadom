@@ -28,7 +28,17 @@ $gridColumn = [
     [
         'class' => '\kartik\grid\CheckboxColumn'
     ],
+    [
+        'attribute' => 'image',
+        'format' => 'raw',
+        'value' => function ($data) {
+            return Html::img($data->imgLnk, ['width' => '66px']);
+        },
+        'headerOptions' => [
+            'style' => 'width:70px'
+        ],
 
+    ],
     'title',
     'alias',
 

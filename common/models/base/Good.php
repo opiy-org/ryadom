@@ -4,6 +4,7 @@ namespace common\models\base;
 
 use common\models\query\GoodQuery;
 use common\models\BaseActiveRecord;
+use mootensai\relation\RelationTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -33,7 +34,9 @@ use mootensai\behaviors\UUIDBehavior;
  */
 class Good extends BaseActiveRecord
 {
-    use \mootensai\relation\RelationTrait;
+    use RelationTrait;
+
+    public $thumbnail;
 
     /**
      * @inheritdoc
@@ -49,7 +52,8 @@ class Good extends BaseActiveRecord
             [['uuid', 'title'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 128],
             [['lock'], 'default', 'value' => '0'],
-            [['lock'], 'mootensai\components\OptimisticLockValidator']
+            [['lock'], 'mootensai\components\OptimisticLockValidator'],
+            [['thumbnail'], 'safe'],
         ];
     }
     
@@ -136,6 +140,14 @@ class Good extends BaseActiveRecord
             'uuid' => [
                 'class' => UUIDBehavior::className(),
                 'column' => 'uuid',
+            ],
+            [
+                'class' => 'trntv\filekit\behaviors\UploadBehavior',
+                //'filesStorage' => 'filesystem', // my custom fileStorage from configuration(for properly remove the file from disk)
+                'attribute' => 'thumbnail',
+                'pathAttribute' => 'image',
+                'baseUrlAttribute' => 'image_base_url',
+
             ],
         ];
     }
