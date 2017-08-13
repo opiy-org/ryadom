@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models\query;
 use common\models\base\Good;
 
 /**

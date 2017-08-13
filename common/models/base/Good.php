@@ -2,6 +2,8 @@
 
 namespace common\models\base;
 
+use common\models\query\GoodQuery;
+use common\models\BaseActiveRecord;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -29,7 +31,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\base\Filial $filial
  * @property \common\models\User $updatedBy
  */
-class Good extends \common\models\BaseActiveRecord
+class Good extends BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
@@ -140,10 +142,10 @@ class Good extends \common\models\BaseActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\models\GoodQuery the active query used by this AR class.
+     * @return GoodQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\GoodQuery(get_called_class());
+        return new GoodQuery(get_called_class());
     }
 }

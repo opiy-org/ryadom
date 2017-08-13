@@ -1,14 +1,14 @@
 <?php
 
-namespace app\models;
-use common\models\base\Organization;
+namespace common\models\query;
+use common\models\base\Review;
 
 /**
- * This is the ActiveQuery class for [[common\models\base\Organization]].
+ * This is the ActiveQuery class for [[common\models\base\Review]].
  *
- * @see \common\models\base\Organization
+ * @see \common\models\base\Review
  */
-class OrganizationQuery extends \yii\db\ActiveQuery
+class ReviewQuery extends \yii\db\ActiveQuery
 {
     public function active()
     {
@@ -18,7 +18,7 @@ class OrganizationQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Organization[]|array
+     * @return Review[]|array
      */
     public function all($db = null)
     {
@@ -27,7 +27,7 @@ class OrganizationQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Organization|array|null
+     * @return Review|array|null
      */
     public function one($db = null)
     {

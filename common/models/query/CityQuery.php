@@ -1,14 +1,14 @@
 <?php
 
-namespace app\models;
-use common\models\base\Filial;
+namespace common\models\query;
+use common\models\base\City;
 
 /**
- * This is the ActiveQuery class for [[common\models\base\Filial]].
+ * This is the ActiveQuery class for [[common\models\base\City]].
  *
- * @see \common\models\base\Filial
+ * @see \common\models\base\City
  */
-class FilialQuery extends \yii\db\ActiveQuery
+class CityQuery extends \yii\db\ActiveQuery
 {
     public function active()
     {
@@ -18,7 +18,7 @@ class FilialQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Filial[]|array
+     * @return City[]|array
      */
     public function all($db = null)
     {
@@ -27,7 +27,7 @@ class FilialQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Filial|array|null
+     * @return City|array|null
      */
     public function one($db = null)
     {

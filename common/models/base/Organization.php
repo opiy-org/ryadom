@@ -2,6 +2,8 @@
 
 namespace common\models\base;
 
+use common\models\query\OrganizationQuery;
+use common\models\BaseActiveRecord;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -35,7 +37,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\User $createdBy
  * @property \common\models\User $updatedBy
  */
-class Organization extends \common\models\BaseActiveRecord
+class Organization extends BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
@@ -158,10 +160,10 @@ class Organization extends \common\models\BaseActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\models\OrganizationQuery the active query used by this AR class.
+     * @return OrganizationQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\OrganizationQuery(get_called_class());
+        return new OrganizationQuery(get_called_class());
     }
 }

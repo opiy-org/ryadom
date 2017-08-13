@@ -2,6 +2,7 @@
 
 namespace common\models\base;
 
+use common\models\query\CityQuery;
 use common\models\BaseActiveRecord;
 use mootensai\behaviors\UUIDBehavior;
 use mootensai\relation\RelationTrait;
@@ -158,10 +159,10 @@ class City extends BaseActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\models\CityQuery the active query used by this AR class.
+     * @return CityQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\CityQuery(get_called_class());
+        return new CityQuery(get_called_class());
     }
 }

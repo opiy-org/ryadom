@@ -2,6 +2,8 @@
 
 namespace common\models\base;
 
+use common\models\query\ReviewQuery;
+use common\models\BaseActiveRecord;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -28,7 +30,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\base\Filial $filial
  * @property \common\models\User $updatedBy
  */
-class Review extends \common\models\BaseActiveRecord
+class Review extends BaseActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
@@ -137,10 +139,10 @@ class Review extends \common\models\BaseActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\models\ReviewQuery the active query used by this AR class.
+     * @return ReviewQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\ReviewQuery(get_called_class());
+        return new ReviewQuery(get_called_class());
     }
 }

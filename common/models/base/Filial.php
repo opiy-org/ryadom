@@ -2,6 +2,7 @@
 
 namespace common\models\base;
 
+use common\models\query\FilialQuery;
 use mootensai\behaviors\UUIDBehavior;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -198,10 +199,10 @@ class Filial extends \common\models\BaseActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\models\FilialQuery the active query used by this AR class.
+     * @return FilialQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\FilialQuery(get_called_class());
+        return new FilialQuery(get_called_class());
     }
 }
