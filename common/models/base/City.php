@@ -2,10 +2,12 @@
 
 namespace common\models\base;
 
-use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\behaviors\BlameableBehavior;
+use common\models\BaseActiveRecord;
 use mootensai\behaviors\UUIDBehavior;
+use mootensai\relation\RelationTrait;
+use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the base model class for table "city".
@@ -21,6 +23,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property integer $map_zoom
  * @property string $timezone
  * @property string $settings
+ * @property string $flamp
  * @property integer $created_by
  * @property integer $updated_by
  * @property string $created_at
@@ -32,9 +35,9 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\User $updatedBy
  * @property \common\models\base\Filial[] $filials
  */
-class City extends \common\models\BaseActiveRecord
+class City extends BaseActiveRecord
 {
-    use \mootensai\relation\RelationTrait;
+    use RelationTrait;
 
     /**
      * @inheritdoc
@@ -46,7 +49,7 @@ class City extends \common\models\BaseActiveRecord
             [['body', 'settings'], 'string'],
             [['map_zoom', 'created_by', 'updated_by', 'status', 'lock'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['uuid', 'title', 'alias'], 'string', 'max' => 64],
+            [['uuid', 'title', 'alias', 'flamp'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 128],
             [['map_lat', 'map_lon', 'timezone'], 'string', 'max' => 32],
             [['alias'], 'unique'],
@@ -54,7 +57,7 @@ class City extends \common\models\BaseActiveRecord
             [['lock'], 'mootensai\components\OptimisticLockValidator']
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -64,13 +67,14 @@ class City extends \common\models\BaseActiveRecord
     }
 
     /**
-     * 
+     *
      * @return string
      * overwrite function optimisticLock
-     * return string name of field are used to stored optimistic lock 
-     * 
+     * return string name of field are used to stored optimistic lock
+     *
      */
-    public function optimisticLock() {
+    public function optimisticLock()
+    {
         return 'lock';
     }
 
@@ -91,11 +95,12 @@ class City extends \common\models\BaseActiveRecord
             'map_zoom' => Yii::t('app', 'Map Zoom'),
             'timezone' => Yii::t('app', 'Timezone'),
             'settings' => Yii::t('app', 'Settings'),
+            'flamp' => Yii::t('app', 'Flamp'),
             'status' => Yii::t('app', 'Status'),
             'lock' => Yii::t('app', 'Lock'),
         ];
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -103,7 +108,7 @@ class City extends \common\models\BaseActiveRecord
     {
         return $this->hasOne(\common\models\User::className(), ['id' => 'created_by']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -111,7 +116,7 @@ class City extends \common\models\BaseActiveRecord
     {
         return $this->hasOne(\common\models\User::className(), ['id' => 'updated_by']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -119,11 +124,11 @@ class City extends \common\models\BaseActiveRecord
     {
         return $this->hasMany(\common\models\base\Filial::className(), ['city_id' => 'id']);
     }
-    
-/**
+
+    /**
      * @inheritdoc
      * @return array mixed
-     */ 
+     */
     public function behaviors()
     {
         return [

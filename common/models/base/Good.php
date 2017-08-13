@@ -18,6 +18,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property string $image
  * @property string $qnt
  * @property string $price
+ * @property string $settings
  * @property integer $created_by
  * @property integer $updated_by
  * @property string $created_at
@@ -40,7 +41,7 @@ class Good extends \common\models\BaseActiveRecord
         return [
             [['filial_id', 'title'], 'required'],
             [['filial_id', 'qnt', 'created_by', 'updated_by', 'lock'], 'integer'],
-            [['body'], 'string'],
+            [['body','settings'], 'string'],
             [['price'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
             [['uuid', 'title'], 'string', 'max' => 64],
@@ -83,6 +84,7 @@ class Good extends \common\models\BaseActiveRecord
             'image' => Yii::t('app', 'Image'),
             'qnt' => Yii::t('app', 'Qnt'),
             'price' => Yii::t('app', 'Price'),
+            'settings' => Yii::t('app', 'Settings'),
             'lock' => Yii::t('app', 'Lock'),
         ];
     }

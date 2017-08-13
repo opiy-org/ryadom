@@ -2,10 +2,10 @@
 
 namespace common\models\base;
 
-use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\behaviors\BlameableBehavior;
 use mootensai\behaviors\UUIDBehavior;
+use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the base model class for table "filial".
@@ -18,6 +18,9 @@ use mootensai\behaviors\UUIDBehavior;
  * @property string $alias
  * @property string $body
  * @property string $image
+ * @property string $street
+ * @property string $bld
+ * @property string $addr_extra
  * @property string $map_lat
  * @property string $map_lon
  * @property integer $map_zoom
@@ -54,16 +57,16 @@ class Filial extends \common\models\BaseActiveRecord
             [['title', 'alias'], 'required'],
             [['body', 'settings'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['uuid', 'title', 'alias', 'email', 'site', 'flamp'], 'string', 'max' => 64],
+            [['uuid', 'title', 'alias', 'email', 'site', 'flamp', 'street', 'addr_extra'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 128],
             [['map_lat', 'map_lon'], 'string', 'max' => 32],
-            [['phone'], 'string', 'max' => 16],
+            [['phone', 'bld'], 'string', 'max' => 16],
             [['alias'], 'unique'],
             [['lock'], 'default', 'value' => '0'],
             [['lock'], 'mootensai\components\OptimisticLockValidator']
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -73,13 +76,14 @@ class Filial extends \common\models\BaseActiveRecord
     }
 
     /**
-     * 
+     *
      * @return string
      * overwrite function optimisticLock
-     * return string name of field are used to stored optimistic lock 
-     * 
+     * return string name of field are used to stored optimistic lock
+     *
      */
-    public function optimisticLock() {
+    public function optimisticLock()
+    {
         return 'lock';
     }
 
@@ -97,6 +101,9 @@ class Filial extends \common\models\BaseActiveRecord
             'alias' => Yii::t('app', 'Alias'),
             'body' => Yii::t('app', 'Body'),
             'image' => Yii::t('app', 'Image'),
+            'street' => Yii::t('app', 'Street'),
+            'bld' => Yii::t('app', 'Bld'),
+            'addr_extra' => Yii::t('app', 'Addr_extra'),
             'map_lat' => Yii::t('app', 'Map Lat'),
             'map_lon' => Yii::t('app', 'Map Lon'),
             'map_zoom' => Yii::t('app', 'Map Zoom'),
@@ -109,7 +116,7 @@ class Filial extends \common\models\BaseActiveRecord
             'lock' => Yii::t('app', 'Lock'),
         ];
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -117,7 +124,7 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return $this->hasOne(\common\models\base\City::className(), ['id' => 'city_id']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -125,7 +132,7 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return $this->hasOne(\common\models\User::className(), ['id' => 'created_by']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -133,7 +140,7 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return $this->hasOne(\common\models\base\Organization::className(), ['id' => 'organization_id']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -141,7 +148,7 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return $this->hasOne(\common\models\User::className(), ['id' => 'updated_by']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -149,7 +156,7 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return $this->hasMany(\common\models\base\Good::className(), ['filial_id' => 'id']);
     }
-        
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -157,11 +164,11 @@ class Filial extends \common\models\BaseActiveRecord
     {
         return $this->hasMany(\common\models\base\Review::className(), ['filial_id' => 'id']);
     }
-    
-/**
+
+    /**
      * @inheritdoc
      * @return array mixed
-     */ 
+     */
     public function behaviors()
     {
         return [
