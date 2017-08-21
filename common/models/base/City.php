@@ -49,7 +49,7 @@ class City extends BaseActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alias'], 'required'],
+            [['title'], 'required'],
             [['body', 'settings'], 'string'],
             [['map_zoom', 'created_by', 'updated_by', 'status', 'lock'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],

@@ -8,6 +8,7 @@
 
 namespace console\controllers;
 
+use common\commands\AddToTimelineCommand;
 use common\helpers\CacheHelper;
 use common\helpers\FileHelper;
 use common\helpers\YmapsHelper;
@@ -17,7 +18,6 @@ use common\models\base\Organization;
 use common\models\base\Review;
 use Exception;
 use phpQuery;
-use phpQueryObject;
 use yii\base\Module;
 use yii\console\Controller;
 use yii\httpclient\Client;
@@ -40,54 +40,71 @@ class FlampParseController extends Controller
      * @var $city City
      */
     private $city;
+    /**
+     * @var array Organizations
+     */
     private $organizations = [];
+    /**
+     * @var array Filials
+     */
     private $filials = [];
 
+    /**
+     * @param string $actionID
+     * @return array
+     */
     public function options($actionID)
     {
         return ['city_alias'];
     }
 
+    /**
+     * @return array
+     */
     public function optionAliases()
     {
         return ['c' => 'city_alias'];
     }
 
 
+    /**
+     * FlampParseController constructor.
+     * @param string $id
+     * @param Module $module
+     * @param array $config
+     */
     public function __construct($id, Module $module, array $config = [])
     {
         parent::__construct($id, $module, $config);
 
         $orgs = Organization::find()->all();
+        /** @var Organization $org */
         foreach ($orgs as $org) {
             $this->organizations[$org->id] = $org->title;
         }
 
         $fils = Filial::find()->all();
+        /** @var Filial $fil */
         foreach ($fils as $fil) {
             $this->filials[$fil->id] = $fil->title;
         }
 
     }
 
+
     /**
-     * @return int
+     * @throws \yii\console\Exception
      */
     public function actionIndex()
     {
 
         $this->city = City::find()->where(['alias' => trim($this->city_alias)])->one();
         if (!$this->city) {
-            echo 'City ' . $this->city_alias . ' not found';
-            return 1;
+            throw new \yii\console\Exception('City ' . $this->city_alias . ' not found', 1);
         }
-
         $url = $this->city->flamp;
 
-
         $client = new Client();
-
-
 
         $next_url = $url;
         while ($next_url) {
@@ -106,10 +123,12 @@ class FlampParseController extends Controller
         }
 
 
-        return 0;
     }
 
 
+    /**
+     * @param $filials_data
+     */
     protected function createFilials($filials_data)
     {
 
@@ -195,6 +214,11 @@ class FlampParseController extends Controller
     }
 
 
+    /**
+     * @param Filial $filial
+     * @param string $url
+     * @return bool
+     */
     protected function setFilialExtraData(Filial $filial, string $url)
     {
         $filial_data = $this->getDataFromUrl($url);
@@ -213,7 +237,7 @@ class FlampParseController extends Controller
         foreach ($body_data as $b) {
             $body .= ' ' . trim(pq($b)->text());
         }
-
+        $format = null;
         if ($body_data_check > 2) {
             $format = trim($pQuery_filial->find('.filial-info-row__content:eq(1)')->text());
             $payments_elem_id = '2';
@@ -268,6 +292,10 @@ class FlampParseController extends Controller
 
     }
 
+    /**
+     * @param int $filial_id
+     * @param $data
+     */
     protected function createReview(int $filial_id, $data)
     {
         $review_data = pq($data);
@@ -320,6 +348,16 @@ class FlampParseController extends Controller
             $org_id = $org->id;
             $this->organizations[$org_id] = $title;
             echo $org_id;
+            \Yii::$app->commandBus->handle(new AddToTimelineCommand([
+                'category' => 'organization',
+                'event' => 'create',
+                'data' => [
+                    'title' => $title,
+                    'organization_id' => $org_id,
+                    'created_at' => $org->created_at
+                ]
+            ]));
+
             return $org_id;
         }
 
@@ -327,6 +365,10 @@ class FlampParseController extends Controller
     }
 
 
+    /**
+     * @param $url
+     * @return string
+     */
     protected function addHttpToUrl($url)
     {
         $url = trim($url);
