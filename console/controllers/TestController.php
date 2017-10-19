@@ -8,7 +8,9 @@
 
 namespace console\controllers;
 
-use igogo5yo\uploadfromurl\UploadFromUrl;
+use common\helpers\FileHelper;
+use common\models\base\Filial;
+use trntv\filekit\File;
 use Yii;
 use yii\console\Controller;
 
@@ -23,20 +25,27 @@ class TestController extends Controller
 
     /**
      * @return int
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex()
     {
 
-        $path=Yii::getAlias('@console') . DIRECTORY_SEPARATOR .  'tmp' . DIRECTORY_SEPARATOR;
+        $path = Yii::getAlias('@console') . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
 
         $url = 'https://cdn.flamp.ru/4ce917d61bb2688bf8aca575f40d36ba_320.jpg';
-        $file = UploadFromUrl::initWithUrl($url);
-        $file->saveAs($path . $file);
 
+        $z = new Filial();
 
-        $bucket = Yii::$app->fileStorage;
-        $res=$bucket->save($path.$file);
-        print_r($res);
+        $z->title = 'test';
+        $z->organization_id = 1;
+        $z->city_id = 1;
+        $z->thumbnail = FileHelper::uploadFromUrl($url);
+        if (!$z->save()) {
+            print_r($z->getErrors());
+        } else {
+            print_r($z->attributes);
+        }
+
 
     }
 }

@@ -163,7 +163,7 @@ class Organization extends BaseActiveRecord
             ],
             [
                 'class' => 'trntv\filekit\behaviors\UploadBehavior',
-                //'filesStorage' => 'filesystem', // my custom fileStorage from configuration(for properly remove the file from disk)
+                'filesStorage' => 'fileStorage', // my custom fileStorage from configuration(for properly remove the file from disk)
                 'attribute' => 'thumbnail',
                 'pathAttribute' => 'image',
                 'baseUrlAttribute' => 'image_base_url',

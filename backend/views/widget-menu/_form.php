@@ -1,5 +1,6 @@
 <?php
 
+use kdn\yii2\JsonEditor;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -18,13 +19,16 @@ use yii\bootstrap\ActiveForm;
 
     <?php echo $form->field($model, 'title')->textInput(['maxlength' => 512]) ?>
 
-    <?php echo $form->field($model, 'items')->widget(
-        trntv\aceeditor\AceEditor::className(),
-        [
-            'mode' => 'json'
-        ]
-    ) ?>
 
+    <?= $form->field($model, 'items')->widget(
+        JsonEditor::className(),
+        [
+            'clientOptions' => [
+                'mode' => 'tree',
+            ],
+        ]
+    );
+    ?>
     <?php echo $form->field($model, 'status')->checkbox() ?>
 
     <div class="form-group">

@@ -272,9 +272,24 @@ class FlampParseController extends Controller
         ]);
 
 
+        $fil_image=false;
         $img_url = $pQuery_filial->find('cat-brand-avatar')->attr('image');
-        $filial->image = FileHelper::uploadFroomUrl($img_url);
+        if ($img_url && !strpos($img_url,'default')) {
+            $fil_image = FileHelper::uploadFromUrl($img_url);
+        }
 
+        if (!$fil_image) {
+            $img_url = $pQuery_filial->find('.photos-block__slider > li > img')->attr('src');
+
+            if ($img_url) {
+                $fil_image = FileHelper::uploadFromUrl($img_url);
+            }
+        }
+
+
+        if ($fil_image) {
+           $filial->thumbnail=$fil_image;
+        }
 
         $coords = YmapsHelper::getCoords($this->city->title . ', ' . $filial->street . ', ' . $filial->bld);
         if ($coords) {
@@ -306,6 +321,7 @@ class FlampParseController extends Controller
         $review->user_name = trim($review_data->find('.ugc-item__author .author__content a.name')->text());
 
         $body = trim($review_data->find('.l-inner .ugc-item__text--full')->html());
+        $body = strip_tags($body);
         $review->title = substr($body, 0, 64);
         $review->body = trim($body);
         $review->rating = (int)$review_data->find('meta[itemprop="ratingValue"]')->attr('content');
@@ -341,7 +357,7 @@ class FlampParseController extends Controller
         $org->status = Organization::STATUS_ENABLED;
 
         $img_url = $pQuery_org->find('cat-brand-avatar')->attr('image');
-        $org->image = FileHelper::uploadFroomUrl($img_url);
+        $org->thumbnail = FileHelper::uploadFromUrl($img_url);
 
 
         if ($org->save()) {

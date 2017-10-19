@@ -10,15 +10,22 @@ namespace common\helpers;
 
 
 use igogo5yo\uploadfromurl\UploadFromUrl;
+use trntv\filekit\File;
 
 class FileHelper
 {
 
-    public static function uploadFroomUrl($url)
+    /**
+     * @param $url
+     * @return bool|string
+     */
+    public static function uploadFromUrl($url)
     {
         $url = trim($url);
         $path = \Yii::getAlias('@console') . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
-        if (!strlen($url) > 3) return null;
+        if (!strlen($url) > 3) {
+            return false;
+        }
 
         try {
             $file = UploadFromUrl::initWithUrl($url);
@@ -29,13 +36,19 @@ class FileHelper
 
             $result = $bucket->save($path . $file);
 
+            if ($result) {
+                $result=File::create($result);
+            }
+
             if (file_exists($path . $file)) {
                 unlink($path . $file);
             }
-            return $result;
+
         } catch (\Exception $e) {
-            return null;
+            return false;
         }
+
+        return $result;
     }
 
 }
